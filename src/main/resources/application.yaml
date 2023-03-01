@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/QPOLLA
+    username: postgres
+    password: 123456
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        #generate_statistics: true
+        format_sql: true
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+    hibernate:
+      ddl-auto: update
