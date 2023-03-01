@@ -1,4 +1,4 @@
-package com.quip.gundemioyla;
+package com.qpolla;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

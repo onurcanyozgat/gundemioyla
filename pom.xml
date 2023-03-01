@@ -8,14 +8,14 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.quip</groupId>
-	<artifactId>gundemioyla</artifactId>
+	<groupId>com.qpolla</groupId>
+	<artifactId>qpolla</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>gundemioyla</name>
+	<name>qpolla</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>19</java.version>
 	</properties>
 	<dependencies>
 		<!--<dependency>
