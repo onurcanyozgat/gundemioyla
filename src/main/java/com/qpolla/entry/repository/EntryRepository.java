@@ -1,6 +1,6 @@
-package com.qpolla.repository;
+package com.qpolla.entry.repository;
 
-import com.qpolla.data.entity.entry.EntryEntity;
+import com.qpolla.entry.data.EntryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EntryRepository extends JpaRepository<EntryEntity, Long> {}

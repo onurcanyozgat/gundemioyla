@@ -1,4 +1,4 @@
-package com.qpolla.data.entity.user;
+package com.qpolla.user.data;
 
 import lombok.Getter;
 

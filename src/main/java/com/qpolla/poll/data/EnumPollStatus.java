@@ -1,4 +1,4 @@
-package com.qpolla.data.entity.poll;
+package com.qpolla.poll.data;
 
 import lombok.Getter;
 
