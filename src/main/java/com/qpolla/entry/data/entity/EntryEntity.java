@@ -1,7 +1,8 @@
-package com.qpolla.data.entity.entry;
+package com.qpolla.entry.data.entity;
 
-import com.qpolla.data.entity.poll.PollEntity;
-import com.qpolla.data.entity.user.UserEntity;
+import com.qpolla.entry.data.EnumEntryStatus;
+import com.qpolla.poll.data.entity.PollEntity;
+import com.qpolla.user.data.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
