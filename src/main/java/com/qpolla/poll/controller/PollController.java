@@ -32,4 +32,11 @@ public class PollController {
         return ResponseEntity.ok().build();
     }
 
+
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody PollEntity pollEntity) {
+        // TODO update the poll
+        return ResponseEntity.ok().build();
+    }
+
 }
