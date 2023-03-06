@@ -1,6 +1,5 @@
-package com.qpolla.data.entity;
+package com.qpolla.poll.data.entity;
 
-import com.qpolla.data.entity.poll.PollEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
