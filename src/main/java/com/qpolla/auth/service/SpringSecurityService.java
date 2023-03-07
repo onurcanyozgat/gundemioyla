@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,13 +28,16 @@ public class SpringSecurityService {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // TODO: form login can be changed.
-        http.csrf().disable().authorizeHttpRequests(
-                        (authorize) -> authorize.requestMatchers("/signup/**").permitAll().requestMatchers("/index").permitAll().requestMatchers(
+        // TODO: form login can be changed. enable it.
+        http.csrf().disable();
+        /* http.csrf().disable().authorizeHttpRequests(
+                        (authorize) -> authorize.requestMatchers("/signup/**").
+                                        permitAll().requestMatchers("/index").permitAll().requestMatchers(
                                 "/users")
                                 .hasRole("ADMIN"))
                 .formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/users").permitAll())
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
+        return http.build();*/
         return http.build();
     }
 
