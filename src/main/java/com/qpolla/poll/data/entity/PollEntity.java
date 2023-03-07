@@ -1,6 +1,6 @@
 package com.qpolla.poll.data.entity;
 
-import com.qpolla.entry.data.entity.EntryEntity;
+import com.qpolla.comment.data.entity.CommentEntity;
 import com.qpolla.poll.data.EnumPollCategory;
 import com.qpolla.poll.data.EnumPollStatus;
 import com.qpolla.user.data.entity.UserEntity;
@@ -17,17 +17,19 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "QPoll")
-@Entity(name = "QPoll")
+@Table(name = "polls")
+@Entity
 public class PollEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +46,7 @@ public class PollEntity {
     private List<OptionEntity> optionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<EntryEntity> entryList = new ArrayList<>();
+    private List<CommentEntity> entryList = new ArrayList<>();
 
     @Column
     @Enumerated(EnumType.STRING)
