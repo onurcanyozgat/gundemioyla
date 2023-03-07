@@ -42,6 +42,9 @@ public class CommentEntity {
     private UserEntity author;
 
     @Column
+    private String comment;
+
+    @Column
     private long date;
 
     @Column

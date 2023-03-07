@@ -2,6 +2,7 @@ package com.qpolla.poll.controller;
 
 import com.qpolla.poll.data.dto.PollDto;
 import com.qpolla.poll.data.dto.PollStatusChangeRequestDto;
+import com.qpolla.poll.data.dto.PollVoteDto;
 import com.qpolla.poll.service.PollService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,12 @@ public class PollController {
     @PutMapping
     public ResponseEntity<?> update(@RequestBody PollDto pollDto) {
         PollDto updatedDto = pollService.update(pollDto);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    @PatchMapping(value = "/vote")
+    public ResponseEntity<?> vote(@RequestBody PollVoteDto dto) {
+        PollDto updatedDto = pollService.vote(dto);
         return ResponseEntity.ok(updatedDto);
     }
 
