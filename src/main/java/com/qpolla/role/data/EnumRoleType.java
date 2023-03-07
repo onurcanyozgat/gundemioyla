@@ -1,9 +1,9 @@
-package com.qpolla.user.data;
+package com.qpolla.role.data;
 
 import lombok.Getter;
 
 @Getter
-public enum EnumUserType {
+public enum EnumRoleType {
     ADMIN,
     MODERATOR,
     USER,

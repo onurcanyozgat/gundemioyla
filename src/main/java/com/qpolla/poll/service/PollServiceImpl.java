@@ -9,14 +9,12 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class PollServiceImpl implements PollService {
-
     private final PollRepository repository;
 
     private final PollConverter converter;
@@ -35,16 +33,16 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public PollDto get(Long id) throws EntityNotFoundException{
+    public PollDto get(Long id) throws EntityNotFoundException {
         Optional<PollEntity> entity = repository.findById(id);
-        PollEntity e =  entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + id));
+        PollEntity e = entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + id));
         return converter.toDto(e);
     }
 
     @Override
     public PollDto updateStatus(PollStatusChangeRequestDto dto) {
         Optional<PollEntity> entity = repository.findById(dto.getPollId());
-        PollEntity e =  entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + dto.getPollId()));
+        PollEntity e = entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + dto.getPollId()));
         e.setStatus(dto.getNewStatus());
         repository.save(e);
         return converter.toDto(e);

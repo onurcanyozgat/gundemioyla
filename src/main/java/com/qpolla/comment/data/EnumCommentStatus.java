@@ -1,9 +1,9 @@
-package com.qpolla.entry.data;
+package com.qpolla.comment.data;
 
 import lombok.Getter;
 
 @Getter
-public enum EnumEntryStatus {
+public enum EnumCommentStatus {
     APPROVED,
     REJECTED,
     BANNED,
