@@ -1,6 +1,6 @@
-package com.qpolla.entry.data.entity;
+package com.qpolla.comment.data.entity;
 
-import com.qpolla.entry.data.EnumEntryStatus;
+import com.qpolla.comment.data.EnumCommentStatus;
 import com.qpolla.poll.data.entity.PollEntity;
 import com.qpolla.user.data.entity.UserEntity;
 import jakarta.persistence.Column;
@@ -15,15 +15,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "QEntry")
-@Entity(name = "QEntry")
-public class EntryEntity {
+@Table(name = "comments")
+@Entity
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,7 +33,7 @@ public class EntryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private EntryEntity parent;
+    private CommentEntity parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private PollEntity poll;
@@ -44,7 +46,7 @@ public class EntryEntity {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private EnumEntryStatus status;
+    private EnumCommentStatus status;
 
     @Column
     private String url;
