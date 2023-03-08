@@ -22,7 +22,9 @@ public class PollConverter {
         //dto.setOptionList();
         dto.setVotingEndDate(entity.getVotingEndDate());
         dto.setVotingStartDate(entity.getVotingStartDate());
-        // TODO user need to be implemented
+        if(entity.getAuthor() != null) {
+            dto.setAuthorId(entity.getAuthor().getId());
+        }
         // TODO image need to be implemented
         return dto;
     }
@@ -38,7 +40,7 @@ public class PollConverter {
         entity.setTitle(dto.getTitle());
         entity.setStatus(dto.getStatus());
         entity.setApprovedDate(dto.getApprovedDate());
-        // TODO user need to be implemented
+        // TODO find user and set to entity
         //entity.setAuthor();
         // TODO image need to be implemented
         entity.setVotingEndDate(entity.getVotingEndDate());

@@ -1,20 +1,17 @@
 package com.qpolla.poll.service;
 
+import com.qpolla.exception.ResourceNotFoundException;
 import com.qpolla.poll.converter.PollConverter;
 import com.qpolla.poll.data.dto.PollDto;
 import com.qpolla.poll.data.dto.PollStatusChangeRequestDto;
 import com.qpolla.poll.data.dto.PollVoteDto;
-import com.qpolla.poll.data.entity.OptionEntity;
 import com.qpolla.poll.data.entity.PollEntity;
 import com.qpolla.poll.repository.PollRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,16 +34,16 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public PollDto get(Long id) throws EntityNotFoundException {
+    public PollDto get(Long id) throws ResourceNotFoundException {
         Optional<PollEntity> entity = repository.findById(id);
-        PollEntity e = entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + id));
+        PollEntity e = entity.orElseThrow(() -> new ResourceNotFoundException("Poll not found with the given id:", String.valueOf(id)));
         return converter.toDto(e);
     }
 
     @Override
-    public PollDto updateStatus(PollStatusChangeRequestDto dto) {
+    public PollDto updateStatus(PollStatusChangeRequestDto dto) throws ResourceNotFoundException {
         Optional<PollEntity> entity = repository.findById(dto.getPollId());
-        PollEntity e = entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + dto.getPollId()));
+        PollEntity e = entity.orElseThrow(() -> new ResourceNotFoundException("Poll not found with the given id:", String.valueOf(dto.getPollId())));
         e.setStatus(dto.getNewStatus());
         repository.save(e);
         return converter.toDto(e);
@@ -58,16 +55,12 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public PollDto vote(PollVoteDto dto) throws EntityNotFoundException{
+    public PollDto vote(PollVoteDto dto) throws ResourceNotFoundException {
         Optional<PollEntity> entity = repository.findById(dto.getPollId());
-        PollEntity e = entity.orElseThrow(() -> new EntityNotFoundException("Poll not found with the given id:" + dto.getPollId()));
-        e.setTotalVoteCount(e.getTotalVoteCount()+1);
-        List<OptionEntity> optionList = e.getOptionList().stream().filter(o -> dto.getOptionId().equals(o.getId())).collect(Collectors.toList());
-        if(!optionList.isEmpty()) {
-            OptionEntity optionEntity = optionList.get(0);
-            optionEntity.setVoteCount(optionEntity.getVoteCount()+1);
-        }
-        PollEntity savedEntity = repository.save(e);
+        PollEntity pollEntity =
+                entity.orElseThrow(() -> new ResourceNotFoundException("Poll not found with the given id:", String.valueOf(dto.getPollId())));
+        pollEntity.vote(dto.getOptionId());
+        PollEntity savedEntity = repository.save(pollEntity);
         return converter.toDto(savedEntity);
     }
 }

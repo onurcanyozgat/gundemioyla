@@ -1,6 +1,7 @@
 package com.qpolla.comment.data.entity;
 
 import com.qpolla.comment.data.EnumCommentStatus;
+import com.qpolla.comment.data.EnumVoteType;
 import com.qpolla.poll.data.entity.PollEntity;
 import com.qpolla.user.data.entity.UserEntity;
 import jakarta.persistence.Column;
@@ -59,4 +60,12 @@ public class CommentEntity {
 
     @Column
     private int upvoteCount;
+
+    public void vote(EnumVoteType type) {
+        if(EnumVoteType.UPVOTE.equals(type)) {
+            upvoteCount++;
+        } else if (EnumVoteType.DOWNVOTE.equals(type)){
+            downVoteCount++;
+        }
+    }
 }

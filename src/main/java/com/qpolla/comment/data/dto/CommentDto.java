@@ -1,5 +1,6 @@
 package com.qpolla.comment.data.dto;
 
+import com.qpolla.comment.data.EnumCommentStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,5 +19,13 @@ public class CommentDto {
     private String url;
 
     private String comment;
+
+    private EnumCommentStatus status;
+
+    private long date;
+
+    private int downVoteCount;
+
+    private int upvoteCount;
 
 }

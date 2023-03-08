@@ -35,4 +35,8 @@ public class OptionEntity {
 
     @Column
     private int voteCount;
+
+    public void vote() {
+        voteCount++;
+    }
 }

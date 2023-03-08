@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "polls")
 @Entity
+@Slf4j
 public class PollEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,4 +78,15 @@ public class PollEntity {
 
     @Column
     private int totalVoteCount;
+
+    public void vote(Long optionID) {
+        totalVoteCount++;
+        List<OptionEntity> optionList = getOptionList().stream().filter(o -> optionID.equals(o.getId())).toList();
+        if (!optionList.isEmpty()) {
+            OptionEntity optionEntity = optionList.get(0);
+            optionEntity.vote();
+        } else {
+            log.error("Option not found for provided id. Id:" + optionID);
+        }
+    }
 }
