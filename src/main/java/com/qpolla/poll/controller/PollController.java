@@ -1,7 +1,9 @@
 package com.qpolla.poll.controller;
 
+import com.qpolla.exception.ResourceNotFoundException;
 import com.qpolla.poll.data.dto.PollDto;
 import com.qpolla.poll.data.dto.PollStatusChangeRequestDto;
+import com.qpolla.poll.data.dto.PollVoteDto;
 import com.qpolla.poll.service.PollService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +39,38 @@ public class PollController {
 
     @GetMapping(value = "/")
     public ResponseEntity<?> get(@RequestParam("pollId") Long pollId) {
-        PollDto foundDto = pollService.get(pollId);
-        return ResponseEntity.ok(foundDto);
+        try {
+            PollDto foundDto = pollService.get(pollId);
+            return ResponseEntity.ok(foundDto);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping(value = "/")
     public ResponseEntity<?> updateStatus(@RequestBody PollStatusChangeRequestDto dto) {
-        PollDto updatedDto = pollService.updateStatus(dto);
-        return ResponseEntity.ok(updatedDto);
+        try {
+            PollDto updatedDto = pollService.updateStatus(dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody PollDto pollDto) {
         PollDto updatedDto = pollService.update(pollDto);
         return ResponseEntity.ok(updatedDto);
+    }
+
+    @PatchMapping(value = "/vote")
+    public ResponseEntity<?> vote(@RequestBody PollVoteDto dto) {
+        try {
+            PollDto updatedDto = pollService.vote(dto);
+            return ResponseEntity.ok(updatedDto);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

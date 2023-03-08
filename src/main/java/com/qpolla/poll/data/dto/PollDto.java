@@ -29,7 +29,7 @@ public class PollDto {
 
     private EnumPollStatus status;
 
-    private UserDto author;
+    private Long authorId;
 
     private String url;
     // TODO json error
