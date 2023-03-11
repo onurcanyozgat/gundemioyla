@@ -1,6 +1,7 @@
 package com.qpolla.user.service;
 
-import com.qpolla.role.data.EnumRoleType;
+import com.qpolla.auth.data.dto.error.EmailAlreadyTaken;
+import com.qpolla.auth.data.dto.error.UsernameAlreadyTaken;
 import com.qpolla.role.data.entity.RoleEntity;
 import com.qpolla.role.sevice.RoleService;
 import com.qpolla.user.converter.UserConverter;
@@ -15,9 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final RoleService roleService;
 
-    private final PasswordEncoder passwordEncoder;
+     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserConverter userConverter, RoleService roleService, PasswordEncoder passwordEncoder) {
@@ -39,28 +38,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDto userDto) {
-        UserEntity user = userConverter.toEntity(userDto); // TODO: convert et.
-        // encrypt the password using spring security
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        RoleEntity role = roleService.findByType(EnumRoleType.ADMIN); // TODO: initial role definition yapilmali.
-        user.setRoles(Arrays.asList(role));
-        userRepository.save(user);
+    public UserDto saveUser(UserDto userDto) throws UsernameAlreadyTaken, EmailAlreadyTaken {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new UsernameAlreadyTaken("Error: Username is already taken!");
+        }
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new UsernameAlreadyTaken("Error: Email is already taken!");
+        }
+         UserEntity user = new UserEntity(userDto.getUsername(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()));
+        UserEntity savedEntity = userRepository.save(user);
+        return userConverter.toDto(savedEntity);
     }
 
     @Override
-    public UserEntity findUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
-    public UserEntity findUserByEmail(String email) {
-        return null;
-    }
-
-    @Override
-    public List<UserDto> findAllUsers() {
-        return null;
+    public UserDto updateProfile(UserDto userDto) {
+        UserEntity userEntity = userConverter.toEntity(userDto);
+        UserEntity savedEntity = userRepository.save(userEntity);
+        return userConverter.toDto(savedEntity);
     }
 
     @Override
@@ -76,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<RoleEntity> roles) {
         Collection<? extends GrantedAuthority> mapRoles =
-                roles.stream().map(role -> new SimpleGrantedAuthority(role.getType().name())).collect(Collectors.toList());
+                roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).collect(Collectors.toList());
         return mapRoles;
     }
 }

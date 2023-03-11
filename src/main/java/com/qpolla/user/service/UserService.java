@@ -1,17 +1,11 @@
 package com.qpolla.user.service;
 
+import com.qpolla.auth.data.dto.UserSignupDto;
 import com.qpolla.user.data.dto.UserDto;
-import com.qpolla.user.data.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
-
 public interface UserService extends UserDetailsService {
-    void saveUser(UserDto userDto);
+    UserDto saveUser(UserDto signupDto);
 
-    UserEntity findUserByUsername(String username);
-
-    UserEntity findUserByEmail(String email);
-
-    List<UserDto> findAllUsers();
+    UserDto updateProfile(UserDto userDto);
 }
