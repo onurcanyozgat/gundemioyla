@@ -2,26 +2,24 @@ package com.qpolla.user.data.dto;
 
 import com.qpolla.role.data.dto.RoleDto;
 import com.qpolla.user.data.EnumUserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UserDto implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "Email should not be empty")
-    @Email
     private String email;
 
-    @NotEmpty
     private String username;
 
-    @NotEmpty(message = "Password should not be empty")
     private String password;
 
     private List<RoleDto> roles = new ArrayList<>();
@@ -43,4 +41,10 @@ public class UserDto implements Serializable {
     private String url;
 
     private int pollCounter;
+
+    public UserDto(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

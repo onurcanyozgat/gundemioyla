@@ -11,7 +11,7 @@ import java.util.List;
 public class RoleDto implements Serializable {
     private Long id;
 
-    private EnumRoleType type;
+    private EnumRoleType role;
 
     private List<UserDto> users;
 }
