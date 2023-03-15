@@ -10,13 +10,13 @@ public class RoleConverter {
         RoleDto target = new RoleDto();
         target.setRole(source.getRole());
         target.setId(source.getId());
-        // TODO:
-        // target.getUsers()
         return target;
     }
 
     public RoleEntity toEntity(RoleDto source) {
         RoleEntity target = new RoleEntity();
+        target.setId(source.getId());
+        target.setRole(source.getRole());
         return target;
     }
 }

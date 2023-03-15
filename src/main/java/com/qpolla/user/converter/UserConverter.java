@@ -21,6 +21,9 @@ public class UserConverter {
     }
 
     public UserDto toDto(UserEntity source) {
+        if (source == null) {
+            return null;
+        }
         UserDto target = new UserDto();
         target.setId(source.getId());
         target.setUsername(source.getUsername());
@@ -41,6 +44,9 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(UserDto source) {
+        if (source == null) {
+            return null;
+        }
         UserEntity target = new UserEntity();
         target.setId(source.getId());
         target.setUsername(source.getUsername());
