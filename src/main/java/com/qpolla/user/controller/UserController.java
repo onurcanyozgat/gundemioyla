@@ -3,6 +3,7 @@ package com.qpolla.user.controller;
 import com.qpolla.auth.data.dto.UserSignupDto;
 import com.qpolla.auth.data.dto.error.EmailAlreadyTaken;
 import com.qpolla.auth.data.dto.error.UsernameAlreadyTaken;
+import com.qpolla.user.data.dto.UserChangeRequestDto;
 import com.qpolla.user.data.dto.UserDto;
 import com.qpolla.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +29,23 @@ public class UserController {
     }
 
     @PostMapping("/update-profile")
-    public ResponseEntity<UserDto> updateProfile(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> updateProfile(@RequestBody UserDto userDto) {
         try {
             UserDto updatedUser = userService.updateProfile(userDto);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception ex) {
+            log.error("Error is occurred while updating user profile. Detail: ",ex);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/update-status")
+    public ResponseEntity<?> updateUserStatus(@RequestBody UserChangeRequestDto userChangeRequest){
+        try {
+            UserDto userDto = userService.updateStatus(userChangeRequest);
+            return ResponseEntity.ok(userDto);
+        }catch (Exception ex){
+            log.error("Error is occurred while updating user status. Detail: ",ex);
             return ResponseEntity.internalServerError().build();
         }
     }

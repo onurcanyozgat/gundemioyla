@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 public class RoleConverter {
     public RoleDto toDto(RoleEntity source) {
         RoleDto target = new RoleDto();
+        target.setRole(source.getRole());
+        target.setId(source.getId());
+        // TODO:
+        // target.getUsers()
         return target;
     }
 
