@@ -1,52 +1,62 @@
 package com.qpolla.poll.converter;
 
+import com.qpolla.poll.data.dto.OptionDto;
 import com.qpolla.poll.data.dto.PollDto;
+import com.qpolla.poll.data.entity.OptionEntity;
 import com.qpolla.poll.data.entity.PollEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PollConverter {
+    private final OptionConverter optionConverter;
 
-    public PollDto toDto(PollEntity entity) {
-        PollDto dto = new PollDto();
-        dto.setId(entity.getId());
-        dto.setCategory(entity.getCategory());
-        dto.setStatus(entity.getStatus());
-        dto.setDescription(entity.getDescription());
-        dto.setUrl(entity.getUrl());
-        dto.setTitle(entity.getTitle());
-        dto.setApprovedDate(entity.getApprovedDate());
-        // TODO option converter need to be implemented
-        //dto.setOptionList();
-        dto.setVotingEndDate(entity.getVotingEndDate());
-        dto.setVotingStartDate(entity.getVotingStartDate());
-        if(entity.getAuthor() != null) {
-            dto.setAuthorId(entity.getAuthor().getId());
-        }
-        // TODO image need to be implemented
-        return dto;
+    @Autowired
+    public PollConverter(OptionConverter optionConverter) {
+        this.optionConverter = optionConverter;
     }
 
-    public PollEntity toEntity(PollDto dto) {
-        PollEntity entity = new PollEntity();
-        // TODO option converter need to be implemented
-        //entity.setOptionList();
-        entity.setDescription(dto.getDescription());
-        entity.setCategory(entity.getCategory());
-        entity.setId(dto.getId());
-        entity.setUrl(dto.getUrl());
-        entity.setTitle(dto.getTitle());
-        entity.setStatus(dto.getStatus());
-        entity.setApprovedDate(dto.getApprovedDate());
-        // TODO find user and set to entity
-        //entity.setAuthor();
+    public PollDto toDto(PollEntity source) {
+        PollDto target = new PollDto();
+        target.setId(source.getId());
+        target.setCategory(source.getCategory());
+        target.setStatus(source.getStatus());
+        target.setDescription(source.getDescription());
+        target.setUrl(source.getUrl());
+        target.setTitle(source.getTitle());
+        target.setApprovedDate(source.getApprovedDate());
+        List<OptionDto> optionList = source.getOptionList().stream().map(e -> optionConverter.toDto(e)).collect(Collectors.toList());
+        target.setOptionList(optionList);
+        target.setVotingEndDate(source.getVotingEndDate());
+        target.setVotingStartDate(source.getVotingStartDate());
+        if (source.getAuthor() != null) {
+            target.setAuthorId(source.getAuthor().getId());
+        }
         // TODO image need to be implemented
-        entity.setVotingEndDate(entity.getVotingEndDate());
-        entity.setVotingStartDate(entity.getVotingStartDate());
+        return target;
+    }
+
+    public PollEntity toEntity(PollDto source) {
+        PollEntity target = new PollEntity();
+        List<OptionEntity> optionList = source.getOptionList().stream().map(e -> optionConverter.toEntity(e)).collect(Collectors.toList());
+        target.setOptionList(optionList);
+        target.setDescription(source.getDescription());
+        target.setCategory(target.getCategory());
+        target.setId(source.getId());
+        target.setUrl(source.getUrl());
+        target.setTitle(source.getTitle());
+        target.setStatus(source.getStatus());
+        target.setApprovedDate(source.getApprovedDate());
+        // TODO find user and set to target
+        //target.setAuthor();
+        // TODO image need to be implemented
+        target.setVotingEndDate(target.getVotingEndDate());
+        target.setVotingStartDate(target.getVotingStartDate());
         //TODO entry need to be implemented if needed
-        return entity;
+        return target;
     }
 
 }

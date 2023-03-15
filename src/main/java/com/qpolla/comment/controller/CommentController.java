@@ -1,10 +1,11 @@
 package com.qpolla.comment.controller;
 
-import com.qpolla.comment.CommentService;
+import com.qpolla.comment.service.CommentService;
 import com.qpolla.comment.data.dto.CommentDto;
 import com.qpolla.comment.data.dto.CommentStatusChangeDto;
 import com.qpolla.comment.data.dto.CommentVoteDto;
 import com.qpolla.exception.ResourceNotFoundException;
+import com.qpolla.poll.data.EnumPollCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -80,5 +81,4 @@ public class CommentController {
         service.vote(dto);
         return ResponseEntity.ok().build();
     }
-
 }

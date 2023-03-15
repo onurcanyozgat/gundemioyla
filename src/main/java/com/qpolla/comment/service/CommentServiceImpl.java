@@ -1,4 +1,4 @@
-package com.qpolla.comment;
+package com.qpolla.comment.service;
 
 import com.qpolla.comment.converter.CommentConverter;
 import com.qpolla.comment.data.dto.CommentDto;

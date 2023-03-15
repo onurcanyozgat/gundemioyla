@@ -1,12 +1,15 @@
 package com.qpolla.poll.controller;
 
 import com.qpolla.exception.ResourceNotFoundException;
+import com.qpolla.poll.data.EnumPollCategory;
 import com.qpolla.poll.data.dto.PollDto;
 import com.qpolla.poll.data.dto.PollStatusChangeRequestDto;
 import com.qpolla.poll.data.dto.PollVoteDto;
 import com.qpolla.poll.service.PollService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -73,4 +79,19 @@ public class PollController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> filterByCategory(EnumPollCategory category, int page, int size) {
+        try {
+            Page<PollDto> detectionPage = pollService.filterByCategory(category, page, size);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("detectionList", detectionPage.getContent());
+            response.put("currentPage", detectionPage.getNumber());
+            response.put("totalItems", detectionPage.getTotalElements());
+            response.put("totalPages", detectionPage.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);}
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().build();}
+
+    }
 }

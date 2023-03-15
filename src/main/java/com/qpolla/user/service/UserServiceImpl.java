@@ -2,9 +2,11 @@ package com.qpolla.user.service;
 
 import com.qpolla.auth.data.dto.error.EmailAlreadyTaken;
 import com.qpolla.auth.data.dto.error.UsernameAlreadyTaken;
+import com.qpolla.exception.ResourceNotFoundException;
 import com.qpolla.role.data.entity.RoleEntity;
 import com.qpolla.role.sevice.RoleService;
 import com.qpolla.user.converter.UserConverter;
+import com.qpolla.user.data.dto.UserChangeRequestDto;
 import com.qpolla.user.data.dto.UserDto;
 import com.qpolla.user.data.entity.UserEntity;
 import com.qpolla.user.repository.UserRepository;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,8 +61,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto updateStatus(UserChangeRequestDto userChangeRequest) {
+        Optional<UserEntity> entity = userRepository.findByUsername(userChangeRequest.getUsername());
+        UserEntity user = entity.orElseThrow(() -> new ResourceNotFoundException("User is not found with the given username:", userChangeRequest.getUsername()));
+        user.setStatus(userChangeRequest.getNewStatus());
+        userRepository.save(user);
+        return userConverter.toDto(user);
+    }
+
+    @Override
+    public UserEntity findUserById(Long id) {
+        return userRepository.findById(id).orElseGet(null);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findUserByUsername(username).get();
+        UserEntity user = userRepository.findByUsername(username).get();
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                     mapRolesToAuthorities(user.getRoles()));
