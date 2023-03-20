@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -94,4 +95,10 @@ public class PollController {
             return ResponseEntity.internalServerError().build();}
 
     }
+
+    @GetMapping(value = "/category", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getCategories() {
+        return ResponseEntity.ok(List.of(EnumPollCategory.values()));
+    }
+
 }
